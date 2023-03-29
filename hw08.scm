@@ -1,14 +1,15 @@
 (define (my-filter func lst)
-  (cond 
-    ((null? (car lst))
-     nil)
-    ((null? (cdr lst))
-     (if (func (car lst))
-         (car lst)))
-    (else
-     (list (cond 
+  (list (cond 
+          ((null? (car lst))
+           nil)
+          ((null? (cdr lst))
+           (if (func (car lst))
+               (car lst)))
+          (else
+           (cond 
              ((func (car lst))
-              (list (car lst) (my-filter func (cdr lst))))
+              (car lst)
+              (my-filter func (cdr lst)))
              (else
               (my-filter func (cdr lst))))))))
 
