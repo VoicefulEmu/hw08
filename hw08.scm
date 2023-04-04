@@ -1,23 +1,38 @@
 (define (my-filter func lst)
-  (list (cond 
-          ((null? (car lst))
-           nil)
-          ((null? (cdr lst))
-           (if (func (car lst))
-               (car lst)))
-          (else
-           (cond 
-             ((func (car lst))
-              (car lst)
-              (my-filter func (cdr lst)))
-             (else
-              (my-filter func (cdr lst))))))))
+  (cond 
+    ((null? lst)
+     nil)
+    ((func (car lst))
+     (cons (car lst) (my-filter func (cdr lst))))
+    (else
+     (my-filter func (cdr lst)))))
 
-(define (interleave s1 s2) 'YOUR-CODE-HERE)
+(define (interleave s1 s2)
+  (cond 
+    ((null? s1)
+     s2)
+    ((null? s2)
+     s1)
+    (else
+     (cons (car s1)
+           (cons (car s2) (interleave (cdr s1) (cdr s2)))))))
 
 (define (accumulate merger start n term)
-  'YOUR-CODE-HERE)
+  (cond 
+    ((= n 1)
+     1)
+    (else
+     (merger start
+             (cond 
+               ((= merger '*)
+                (merger (term n)
+                        (accumulate merger 1 (- n 1) term)))
+               (else
+                (merger (term n)
+                        (accumulate merger 0 (- n 1) term))))))))
 
 (define (no-repeats lst) 'YOUR-CODE-HERE)
 
-(my-filter even? '(1 2 3 4))
+(define (identity x) x)
+
+(accumulate * 1 5 identity)
