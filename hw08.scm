@@ -18,21 +18,25 @@
            (cons (car s2) (interleave (cdr s1) (cdr s2)))))))
 
 (define (accumulate merger start n term)
+  (if (> n 0)
+      (merger (term n)
+              (accumulate merger start (- n 1) term))
+      start))
+
+; (define (no-repeats lst)
+;   (cons (car lst)
+;         (no-repeats
+;          (my-filter (lambda (x) (not = (x (car lst))))
+;                     (cdr lst)))))
+(define (no-repeats lst)
   (cond 
-    ((= n 1)
-     1)
+    ((null? lst)
+     '())
     (else
-     (merger start
-             (cond 
-               ((= merger '*)
-                (merger (term n)
-                        (accumulate merger 1 (- n 1) term)))
-               (else
-                (merger (term n)
-                        (accumulate merger 0 (- n 1) term))))))))
+     (cons (car lst)
+           (no-repeats
+            (my-filter (lambda (x) (not (= x (car lst))))
+                       (cdr lst)))))))
 
-(define (no-repeats lst) 'YOUR-CODE-HERE)
-
-(define (identity x) x)
-
-(accumulate * 1 5 identity)
+;  (else (cons (car lst) (no-repeats (cdr lst)))))))
+(no-repeats '(5 4 3 2 1 1))
